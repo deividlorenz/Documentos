@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- The jQuery library is a prerequisite for all jqSuite products -->
+    <script type="text/ecmascript" src="~/Content/jquery-3.6.0.js"></script>
+    <!-- We support more than 40 localizations -->
+    <script type="text/ecmascript" src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/i18n/grid.locale-pt-br.js"></script>
+    <!-- This is the Javascript file of jqGrid -->
+    <script type="text/ecmascript" src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/jquery.jqGrid.min.js"></script>
+    <!-- validator script-->
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <script src="~/Content/Toastr/toastr.min.js"></script>
+    <link href="~/Content/Toastr/toastr.css" rel="stylesheet" />
+    <!-- A link to a Boostrap  and jqGrid Bootstrap CSS siles-->
+    <link rel="stylesheet" href="~/Content/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+
+    @*<link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid-bootstrap.css" />*@
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid-bootstrap4.css" />
+    <script>
+        $.jgrid.defaults.width = 780;
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap';
+    </script>
+    <script src="~/Content/bootstrap-4.6.1-dist/js/bootstrap.min.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Cadastro de Documentos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Documentos", "Index", "Documentos")</li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Documentos Application</p>
+        </footer>
+    </div>
+       
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,504 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<style type="text/css">
+    * {
+        color: #212529;
+    }
+    table {
+        background-color: cornflowerblue;
+    }
+
+    error {
+        display: none;
+        margin-left: 10px;
+    }
+
+    error_show {
+        color: red;
+        margin-left: 10px;
+    }
+
+    input.invalid, textarea.invalid, form-control.invalid, select.invalid {
+        border: 2px solid red;
+        
+    }
+
+    input.valid, textarea.valid, form-control.valid, select.valid {
+        border: 2px solid green;
+    }
+</style>
+
+
+<div style="margin-left:20px">
+    <button type="button" class="btn btn-primary" id="add-button">Adicionar</button>
+    <button type="button" class="btn btn-success" id="edit-button">Editar</button>
+    <button type="button" class="btn btn-danger" id="del-button">Excluir</button>
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+
+
+
+
+<div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="Adicionar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-modal">Adicionar Documento</h5>
+            </div>
+            <div class="modal-body">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Código</span>
+                    <input type="text" class="form-control" name="Codigo" id="add-modal-code" value="" required>
+
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Título</span>
+                    <input type="text" class="form-control" name="title" id="add-modal-title" value="" required />
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Revisão</span>
+                    <select class="select" name="revision" id="add-modal-revision" value="" required color: green >
+                        <option value="">Escolha</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Data Planejada</span>
+                    <input type="date" class="form-control" name="planned-date" id="add-modal-planned-date" value="" required />
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Valor</span>
+                    <input type="text" class="form-control" name="value" id="add-modal-value" value="" required />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="add-modal-fechar">Fechar</button>
+                <button type="button" class="btn btn-success" id="add-modal-save">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="Editar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-modal">Editar Documento</h5>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" id="edit-modal-id" />
+
+                <div class="col-md-4">
+                    <label>Código</label>
+                    <input type="text" name="Codigo" id="edit-modal-code" value="" />
+                </div>
+
+                <div class="col-md-4">
+                    <label>Título</label>
+                    <input type="text" name="title" id="edit-modal-title" value="" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="input-group-text" for="inputGroupSelect01">Revisão</label>
+                    <select class="form-select" name="revision" id="edit-modal-revision">
+                        <option selected>Escolha...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Data Planejada</label>
+                    <input type="date" name="planned-date" id="edit-modal-planned-date" value="" />
+                </div>
+
+                <div class="col-md-4">
+                    <label>Valor</label>
+                    <input type="text" name="value" id="edit-modal-value" value="" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit-modal-fechar">Fechar</button>
+                <button type="button" class="btn btn-primary" id="edit-modal-save">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="del-modal" tabindex="-1" aria-labelledby="Deletar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="del-modal">Deletar Documento</h5>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" id="del-modal-id" />
+                <input type="hidden" id="#del-modal-code" />
+                <input type="hidden" id="del-modal-title" />
+                <input type="hidden" id="del-modal-revision" />
+                <input type="hidden" id="del-modal-planned-date" />
+                <input type="hidden" id="del-modal-value" />
+
+                <div class="">
+                    <label>Tem certeza que deseja excluir o registro? </label><br />
+                    <label id="del-modal-label-code"> Código </label><br />
+                    <label id="del-modal-label-title"> Título </label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="del-modal-cancelar">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="del-modal-del">Excluir Registro</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "10000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+
+
+
+
+
+    $(document).on("click", "#add-button", function () {
+
+        $("#add-modal").modal("show");
+
+        $(document).ready(function () {
+
+            $('#add-modal-code').on('input', function () {
+                var input = $(this);
+                var is_code = input.val();
+                if (is_code) { input.removeClass("invalid").addClass("valid"); }
+                else { input.removeClass("valid").addClass("invalid"); }
+            });
+
+            $('#add-modal-title').on('input', function () {
+                var input = $(this);
+                var is_title = input.val();
+                if (is_title) { input.removeClass("invalid").addClass("valid"); }
+                else { input.removeClass("valid").addClass("invalid"); }
+            });
+
+            $('#add-modal-revision').on('input', function () {
+                var input = $(this);                
+                var vrev = /^[A-G]+$/;
+                var is_rev = vrev.test(input.val());
+                if (is_rev) {
+                    input.removeClass("invalid").addClass("valid");}
+                else {
+                    input.removeClass("valid").addClass("invalid");}
+            });
+
+
+            $('#add-modal-planned-date').on('input', function () {
+                var input = $(this);
+                var vdate = /^\d{4}-\d{2}-\d{2}$/;
+                var is_date = vdate.test(input.val());
+                if (is_date) { input.removeClass("invalid").addClass("valid"); }
+                else { input.removeClass("valid").addClass("invalid"); }
+            });
+
+            $('#add-modal-value').on('input', function () {
+                var input = $(this);
+                var vnumber = /^[0-9]+$/;
+                var is_number = vnumber.test(input.val());
+                if (is_number) { input.removeClass("invalid").addClass("valid"); }
+                else { input.removeClass("valid").addClass("invalid"); }
+            });
+
+
+        });
+    });
+
+    $(document).on("click", "#edit-button", function () {
+
+        $("#edit-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+
+        if ($("#edit-modal-id").val() == '') {
+            alert("Selecione um documento para edição")
+            $("#edit-modal").modal("hide")
+        }
+        else {
+
+            $.ajax({
+                type: "POST",
+                url: "Documentos/Get",
+                data: {
+                    id: +  $("#edit-modal-id").val()
+                },
+
+                success: function (data) {
+                    if (data.success) {
+
+                        $("#edit-modal-code").val(data.documento.Codigo)
+                        $("#edit-modal-title").val(data.documento.Titulo)
+                        $("#edit-modal-revision").val(data.documento.Revisao)
+                        var getdate = data.documento.DateRevisao;
+                        var re = "/";
+                        var novadate = getdate.split(re);
+                        novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
+                        $("#edit-modal-planned-date").val(novadate)
+                        $("#edit-modal-value").val(data.documento.Valor)
+                        $("#edit-modal").modal("show")
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                }
+            });
+        }
+    });
+
+
+    $(document).on("click", "#del-button", function () {
+
+        $("#del-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+        if ($("#del-modal-id").val() == '') {
+            alert("Selecione um documento para exclusão")
+            $("#del-modal").modal("hide")
+        }
+        else {
+
+            $("#del-modal").modal("show")
+            $.ajax({
+                type: "POST",
+                url: "Documentos/Get",
+                data: {
+                    id: +  $("#del-modal-id").val()
+                },
+
+                success: function (data) {
+                    if (data.success) {
+                        $("#del-modal-code").val(data.documento.Codigo)
+                        document.getElementById("del-modal-label-code").innerHTML = " Código: " + (data.documento.Codigo);
+                        document.getElementById("del-modal-label-title").innerHTML = "Título: " + (data.documento.Titulo);
+                        $("#del-modal-title").val(data.documento.Titulo)
+                        $("#del-modal-revision").val(data.documento.Revisao)
+                        $("#del-modal-planned-date").val(data.documento.DateRevisao)
+                        $("#del-modal-value").val(data.documento.Valor)
+
+                    }
+                    else {
+                        alert("Erro ao carregar dados para exclusão")
+                    }
+                },
+                error: function (data) {
+                }
+            });
+        }
+
+
+
+
+
+    });
+
+
+    $(document).on("click", "#add-modal-fechar", function () {
+
+        $("#add-modal-code").val("")
+        $("#add-modal-title").val("")
+        $("#add-modal-revision").val("")
+        $("#add-modal-planned-date").val("")
+        $("#add-modal-value").val("")
+        $("#add-modal").modal("hide")
+
+    });
+
+
+    $(document).on("click", "#edit-modal-fechar", function () {
+        $("#edit-modal").modal("hide")
+    });
+
+    $(document).on("click", "#del-modal-cancelar", function () {
+        $("#del-modal").modal("hide")
+    });
+
+
+    $(document).on("click", "#add-modal-save", function () {
+
+        
+        toastr.info('Are you the 6 fingered man?');
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "Documentos/Add",
+            data: {
+                code: $("#add-modal-code").val(),
+                title: $("#add-modal-title").val(),
+                revision: $("#add-modal-revision").val(),
+                plannedDate: $("#add-modal-planned-date").val(),
+                value: $("#add-modal-value").val()
+            },
+            success: function (data) {
+                if (data.success) {
+                    alert("Dados salvos com Sucesso!")
+                    $("#add-modal-code").val("")
+                    $("#add-modal-title").val("")
+                    $("#add-modal-revision").val("")
+                    $("#add-modal-planned-date").val("")
+                    $("#add-modal-value").val("")
+                    $("#add-modal").modal("hide")
+                    $("#add-modal").modal("hide")
+                    $("#jqGrid").trigger('reloadGrid')
+                }
+                else {
+                    alert("Erro ao salvar! Verifique os dados digitados")
+                }
+            },
+            error: function (data) {
+            }
+        });
+    });
+
+
+    $(document).on("click", "#edit-modal-save", function () {
+        $.ajax({
+            type: "POST",
+            url: "Documentos/Edit",
+            data: {
+                id: $("#edit-modal-id").val(),
+                code: $("#edit-modal-code").val(),
+                title: $("#edit-modal-title").val(),
+                revision: $("#edit-modal-revision").val(),
+                plannedDate: $("#edit-modal-planned-date").val(),
+                value: $("#edit-modal-value").val()
+            },
+            success: function (data) {
+                if (data.success) {
+                    $("#edit-modal").modal("hide")
+                    $("#jqGrid").trigger('reloadGrid')
+                }
+                else {
+
+                }
+            },
+            error: function (data) {
+            }
+        });
+    });
+
+
+    $(document).on("click", "#del-modal-del", function () {
+        $.ajax({
+            type: "POST",
+            url: "Documentos/Del",
+            data: {
+                id: $("#del-modal-id").val(),
+                code: $("#del-modal-code").val(),
+                title: $("#del-modal-title").val(),
+                revision: $("#del-modal-revision").val(),
+                plannedDate: $("#del-modal-planned-date").val(),
+                value: $("#del-modal-value").val()
+            },
+            success: function (data) {
+                if (data.success) {
+                    $("#del-modal-id").val("")
+                    $("#del-modal").modal("hide")
+                    $("#jqGrid").trigger('reloadGrid')
+                }
+                else {
+
+                }
+            },
+            error: function (data) {
+            }
+        });
+    });
+
+
+
+
+    $(document).ready(function () {
+        $("#jqGrid").jqGrid({
+            prmNames: {
+                search: "isSearch",
+                nd: null,
+                rows: "numRows",
+                page: "page",
+                sort: "sortField",
+                order: "sortOrder"
+            },
+
+            mtype: 'POST',
+            loadonce: false,
+            gridview: true,
+            autoencode: true,
+            height: "auto",
+            url: 'Documentos/list',
+            datatype: "json",
+            colModel: [
+                { label: 'Id', name: 'Id', width: 75, key: true },
+                { label: 'Código', name: 'Codigo', width: 90 },
+                { label: 'Título', name: 'Titulo', width: 100 },
+                { label: 'Revisão', name: 'Revisao', width: 80 },
+                { label: 'Data Planejada', name: 'DateRevisao', width: 80 },
+                { label: 'Valor', name: 'Valor', width: 80 }
+            ],
+            viewrecords: true,
+            caption: "Documentos cadastrados",
+            styleUI: 'Bootstrap4'
+        });
+    });
+
+</script>
+
