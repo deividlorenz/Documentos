@@ -2,12 +2,10 @@
 @{
     ViewBag.Title = "Index";
 }
+
 <style type="text/css">
     * {
         color: #212529;
-    }
-    table {
-        background-color: cornflowerblue;
     }
 
     error {
@@ -22,7 +20,6 @@
 
     input.invalid, textarea.invalid, form-control.invalid, select.invalid {
         border: 2px solid red;
-        
     }
 
     input.valid, textarea.valid, form-control.valid, select.valid {
@@ -30,135 +27,191 @@
     }
 </style>
 
+<div id="jqGridPager">
+    <div class="row">
 
-<div style="margin-left:20px">
-    <button type="button" class="btn btn-primary" id="add-button">Adicionar</button>
-    <button type="button" class="btn btn-success" id="edit-button">Editar</button>
-    <button type="button" class="btn btn-danger" id="del-button">Excluir</button>
-    <table id="jqGrid"></table>
-    <div id="jqGridPager"></div>
+        <div class="col-4 col-sm-4 d-flex justify-content-start">
+            <button type="button" class="btn btn-primary" id="add-button"><i class="fas fa-plus-circle"></i> Adicionar</button>
+        </div>
+
+        <div class="col-4 col-sm-4 d-flex justify-content-center">
+            <button type="button" class="btn btn-success" id="edit-button"><i class="far fa-edit"></i> Editar</button>
+        </div>
+
+        <div class="col-4 col-sm-4 d-flex justify-content-end">
+            <button type="button" class="btn btn-danger" id="del-button"><i class="fas fa-trash"></i> Excluir</button><br />
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12 col-sm-12">
+            <table class="table" id="jqGrid"></table>
+        </div>
+    </div>
+
 </div>
-
-
-
 
 <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="Adicionar" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex justify-content-center">
                 <h5 class="modal-title" id="add-modal">Adicionar Documento</h5>
             </div>
+
             <div class="modal-body">
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Código</span>
-                    <input type="text" class="form-control" name="Codigo" id="add-modal-code" value="" required>
-
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Código</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="Codigo" id="add-modal-code" value="" required>
+                    </div>
                 </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Título</span>
-                    <input type="text" class="form-control" name="title" id="add-modal-title" value="" required />
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Revisão</span>
-                    <select class="select" name="revision" id="add-modal-revision" value="" required color: green >
-                        <option value="">Escolha</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                    </select>
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Título</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="title" id="add-modal-title" value="" required />
+                    </div>
                 </div>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Data Planejada</span>
-                    <input type="date" class="form-control" name="planned-date" id="add-modal-planned-date" value="" required />
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Revisão</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <select class="select w-100" name="revision" id="add-modal-revision" value="" required>
+                            <option value="">Escolha</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <span class="input-group-text">Data Planejada</span>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <input type="date" class="form-control" name="planned-date" id="add-modal-planned-date" value="" required />
+                    </div>
                 </div>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Valor</span>
-                    <input type="text" class="form-control" name="value" id="add-modal-value" value="" required />
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Valor</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="value" id="add-modal-value" value="" required />
+                    </div>
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="add-modal-fechar">Fechar</button>
-                <button type="button" class="btn btn-success" id="add-modal-save">Salvar Alterações</button>
+                <button type="button" class="btn btn-success" id="add-modal-save"><i class="fas fa-check"></i> Salvar Alterações</button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="Editar" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex justify-content-center">
                 <h5 class="modal-title" id="edit-modal">Editar Documento</h5>
             </div>
+            <input type="hidden" id="edit-modal-id" />
             <div class="modal-body">
 
-                <input type="hidden" id="edit-modal-id" />
+                <div class="row">
 
-                <div class="col-md-4">
-                    <label>Código</label>
-                    <input type="text" name="Codigo" id="edit-modal-code" value="" />
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Código</span>
+                    </div>
+
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="Codigo" id="edit-modal-code" value="" />
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Título</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="title" id="edit-modal-title" value="" />
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label>Título</label>
-                    <input type="text" name="title" id="edit-modal-title" value="" />
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Revisão</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <select class="select w-100" name="revision" id="edit-modal-revision">
+                            <option selected>Escolha...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="input-group-text" for="inputGroupSelect01">Revisão</label>
-                    <select class="form-select" name="revision" id="edit-modal-revision">
-                        <option selected>Escolha...</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                    </select>
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <span class="input-group-text">Data Planejada</span>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <input type="date" class="form-control" name="planned-date" id="edit-modal-planned-date" value="" />
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label>Data Planejada</label>
-                    <input type="date" name="planned-date" id="edit-modal-planned-date" value="" />
-                </div>
-
-                <div class="col-md-4">
-                    <label>Valor</label>
-                    <input type="text" name="value" id="edit-modal-value" value="" />
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-3">
+                        <span class="input-group-text">Valor</span>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <input type="text" class="form-control" name="value" id="edit-modal-value" value="" />
+                    </div>
                 </div>
 
             </div>
-            <div class="modal-footer">
+
+            <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit-modal-fechar">Fechar</button>
-                <button type="button" class="btn btn-primary" id="edit-modal-save">Salvar Alterações</button>
+                <button type="button" class="btn btn-primary" id="edit-modal-save"><i class="fas fa-check"></i> Salvar Alterações</button>
             </div>
+
         </div>
     </div>
 </div>
 
-
-
-
 <div class="modal fade" id="del-modal" tabindex="-1" aria-labelledby="Deletar" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex justify-content-center">
                 <h5 class="modal-title" id="del-modal">Deletar Documento</h5>
             </div>
             <div class="modal-body">
-
                 <input type="hidden" id="del-modal-id" />
                 <input type="hidden" id="#del-modal-code" />
                 <input type="hidden" id="del-modal-title" />
@@ -166,24 +219,32 @@
                 <input type="hidden" id="del-modal-planned-date" />
                 <input type="hidden" id="del-modal-value" />
 
-                <div class="">
-                    <label>Tem certeza que deseja excluir o registro? </label><br />
-                    <label id="del-modal-label-code"> Código </label><br />
-                    <label id="del-modal-label-title"> Título </label>
+
+                <div class="col-12 col-sm-12 d-flex justify-content-center">
+                    <h4 class="modal-title" id="del-title">Excluir o registro? </h4><br />
+                </div>
+                <br />
+                <div class="col-12 col-sm-12">
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="del-modal-label-code"> Código </label>
+
+                    </span>
+                </div>
+                <br />
+                <div class="col-12 col-sm-12">
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="del-modal-label-title"> Título </label>
+                    </span>
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="del-modal-cancelar">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="del-modal-del">Excluir Registro</button>
+                <button type="button" class="btn btn-danger" id="del-modal-del"><i class="fas fa-check"></i> Excluir Registro</button>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 
 
 
@@ -194,21 +255,78 @@
         "debug": false,
         "newestOnTop": false,
         "progressBar": true,
-        "positionClass": "toast-bottom-right",
-        "preventDuplicates": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "10000",
-        "extendedTimeOut": "1000",
+        "hideDuration": "300",
+        "timeOut": "5000",
+        "extendedTimeOut": "600",
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
-    };
+    }
 
+    function isValidate(typeModal) {
 
+        var isValid = true;
+        
 
+        var inputCode = $("#" + typeModal + "-modal-code").val();
+        if (inputCode) {
+            
+            $("#" + typeModal + "-modal-code").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-code").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
+        var inputTitle = $("#" + typeModal + "-modal-title").val();
+        if (inputTitle) {
+            $("#" + typeModal + "-modal-title").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-title").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
+        var inputRevision = $("#" + typeModal + "-modal-revision");
+        var vrev = /^[A-G]+$/;
+        var is_rev = vrev.test(inputRevision.val());
+        if (is_rev) {
+            $("#" + typeModal + "-modal-revision").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-revision").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
+        var inputDate = $("#" + typeModal + "-modal-planned-date");
+        var vdate = /^\d{4}-\d{2}-\d{2}$/;
+        var is_date = vdate.test(inputDate.val());
+        if (is_date) {
+            $("#" + typeModal + "-modal-planned-date").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-planned-date").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
+        var inputValue = $("#" + typeModal + "-modal-value");
+        var vnumber = /^[0-9]+$/;
+        var is_number = vnumber.test(inputValue.val());
+        if (is_number) {
+            $("#" + typeModal + "-modal-value").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-value").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
 
 
@@ -216,60 +334,13 @@
 
         $("#add-modal").modal("show");
 
-        $(document).ready(function () {
-
-            $('#add-modal-code').on('input', function () {
-                var input = $(this);
-                var is_code = input.val();
-                if (is_code) { input.removeClass("invalid").addClass("valid"); }
-                else { input.removeClass("valid").addClass("invalid"); }
-            });
-
-            $('#add-modal-title').on('input', function () {
-                var input = $(this);
-                var is_title = input.val();
-                if (is_title) { input.removeClass("invalid").addClass("valid"); }
-                else { input.removeClass("valid").addClass("invalid"); }
-            });
-
-            $('#add-modal-revision').on('input', function () {
-                var input = $(this);                
-                var vrev = /^[A-G]+$/;
-                var is_rev = vrev.test(input.val());
-                if (is_rev) {
-                    input.removeClass("invalid").addClass("valid");}
-                else {
-                    input.removeClass("valid").addClass("invalid");}
-            });
-
-
-            $('#add-modal-planned-date').on('input', function () {
-                var input = $(this);
-                var vdate = /^\d{4}-\d{2}-\d{2}$/;
-                var is_date = vdate.test(input.val());
-                if (is_date) { input.removeClass("invalid").addClass("valid"); }
-                else { input.removeClass("valid").addClass("invalid"); }
-            });
-
-            $('#add-modal-value').on('input', function () {
-                var input = $(this);
-                var vnumber = /^[0-9]+$/;
-                var is_number = vnumber.test(input.val());
-                if (is_number) { input.removeClass("invalid").addClass("valid"); }
-                else { input.removeClass("valid").addClass("invalid"); }
-            });
-
-
-        });
     });
 
     $(document).on("click", "#edit-button", function () {
 
         $("#edit-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
-
-
         if ($("#edit-modal-id").val() == '') {
-            alert("Selecione um documento para edição")
+            toastr.error("Selecione um documento para edição", "Documentos");
             $("#edit-modal").modal("hide")
         }
         else {
@@ -283,7 +354,6 @@
 
                 success: function (data) {
                     if (data.success) {
-
                         $("#edit-modal-code").val(data.documento.Codigo)
                         $("#edit-modal-title").val(data.documento.Titulo)
                         $("#edit-modal-revision").val(data.documento.Revisao)
@@ -305,13 +375,12 @@
         }
     });
 
-
     $(document).on("click", "#del-button", function () {
 
         $("#del-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
 
         if ($("#del-modal-id").val() == '') {
-            alert("Selecione um documento para exclusão")
+            toastr.error("Selecione um documento para exclusão", "Documentos");
             $("#del-modal").modal("hide")
         }
         else {
@@ -336,7 +405,7 @@
 
                     }
                     else {
-                        alert("Erro ao carregar dados para exclusão")
+
                     }
                 },
                 error: function (data) {
@@ -350,18 +419,21 @@
 
     });
 
-
     $(document).on("click", "#add-modal-fechar", function () {
 
         $("#add-modal-code").val("")
         $("#add-modal-title").val("")
         $("#add-modal-revision").val("")
         $("#add-modal-planned-date").val("")
-        $("#add-modal-value").val("")
+        $("#add-modal-value").val("")       
+        $('#add-modal-code').removeClass("invalid");
+        $('#add-modal-title').removeClass("invalid")
+        $('#add-modal-revision').removeClass("invalid")
+        $('#add-modal-planned-date').removeClass("invalid")
+        $('#add-modal-value').removeClass("invalid")
         $("#add-modal").modal("hide")
 
     });
-
 
     $(document).on("click", "#edit-modal-fechar", function () {
         $("#edit-modal").modal("hide")
@@ -371,72 +443,83 @@
         $("#del-modal").modal("hide")
     });
 
-
     $(document).on("click", "#add-modal-save", function () {
 
-        
-        toastr.info('Are you the 6 fingered man?');
+        if (isValidate("add")) {
 
+            $.ajax({
+                type: "POST",
+                url: "Documentos/Add",
+                data: {
+                    code: $("#add-modal-code").val(),
+                    title: $("#add-modal-title").val(),
+                    revision: $("#add-modal-revision").val(),
+                    plannedDate: $("#add-modal-planned-date").val(),
+                    value: $("#add-modal-value").val()
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success("Gravação efetuada com sucesso!", "Documentos");
+                        $("#add-modal-code").val("")
+                        $("#add-modal-title").val("")
+                        $("#add-modal-revision").val("")
+                        $("#add-modal-planned-date").val("")
+                        $("#add-modal-value").val("")
+                        $("#add-modal").modal("hide")
+                        $("#add-modal").modal("hide")
+                        $("#jqGrid").trigger('reloadGrid')
+                    }
+                    else {
 
-
-        $.ajax({
-            type: "POST",
-            url: "Documentos/Add",
-            data: {
-                code: $("#add-modal-code").val(),
-                title: $("#add-modal-title").val(),
-                revision: $("#add-modal-revision").val(),
-                plannedDate: $("#add-modal-planned-date").val(),
-                value: $("#add-modal-value").val()
-            },
-            success: function (data) {
-                if (data.success) {
-                    alert("Dados salvos com Sucesso!")
-                    $("#add-modal-code").val("")
-                    $("#add-modal-title").val("")
-                    $("#add-modal-revision").val("")
-                    $("#add-modal-planned-date").val("")
-                    $("#add-modal-value").val("")
-                    $("#add-modal").modal("hide")
-                    $("#add-modal").modal("hide")
-                    $("#jqGrid").trigger('reloadGrid')
+                        toastr.warning("Gravação efetuada com sucesso!", "Documentos");
+                    }
+                },
+                error: function (data) {
+                    toastr.error("Gravação não efetuada!", "Documentos");
                 }
-                else {
-                    alert("Erro ao salvar! Verifique os dados digitados")
-                }
-            },
-            error: function (data) {
-            }
-        });
+            
+            });
+        }
+        else {
+
+            toastr.error("Erro! Verifique os campos inválidos" ,"Documentos");
+        }
     });
-
 
     $(document).on("click", "#edit-modal-save", function () {
-        $.ajax({
-            type: "POST",
-            url: "Documentos/Edit",
-            data: {
-                id: $("#edit-modal-id").val(),
-                code: $("#edit-modal-code").val(),
-                title: $("#edit-modal-title").val(),
-                revision: $("#edit-modal-revision").val(),
-                plannedDate: $("#edit-modal-planned-date").val(),
-                value: $("#edit-modal-value").val()
-            },
-            success: function (data) {
-                if (data.success) {
-                    $("#edit-modal").modal("hide")
-                    $("#jqGrid").trigger('reloadGrid')
-                }
-                else {
 
+        if (isValidate("edit")) {
+
+            $.ajax({
+                type: "POST",
+                url: "Documentos/Edit",
+                data: {
+                    id: $("#edit-modal-id").val(),
+                    code: $("#edit-modal-code").val(),
+                    title: $("#edit-modal-title").val(),
+                    revision: $("#edit-modal-revision").val(),
+                    plannedDate: $("#edit-modal-planned-date").val(),
+                    value: $("#edit-modal-value").val()
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr["info"]("Alteração efetuada com sucesso!", "Documentos");
+                        $("#edit-modal").modal("hide")
+                        $("#jqGrid").trigger('reloadGrid')
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
                 }
-            },
-            error: function (data) {
-            }
-        });
+            });
+
+        } else {
+            toastr.error("Verifique os dados e tente novamente", "Documentos");
+        }
+
     });
-
 
     $(document).on("click", "#del-modal-del", function () {
         $.ajax({
@@ -452,12 +535,13 @@
             },
             success: function (data) {
                 if (data.success) {
+                    toastr.success("Registro deletado com sucesso!","Documento")
                     $("#del-modal-id").val("")
                     $("#del-modal").modal("hide")
                     $("#jqGrid").trigger('reloadGrid')
                 }
                 else {
-
+                    toastr.error("Falha ao excluir o registro!", "Documento")
                 }
             },
             error: function (data) {
@@ -466,9 +550,8 @@
     });
 
 
-
-
     $(document).ready(function () {
+
         $("#jqGrid").jqGrid({
             prmNames: {
                 search: "isSearch",
@@ -478,14 +561,17 @@
                 sort: "sortField",
                 order: "sortOrder"
             },
-
             mtype: 'POST',
             loadonce: false,
             gridview: true,
             autoencode: true,
+            autowidth: true,
+
             height: "auto",
+            width: "auto",
             url: 'Documentos/list',
             datatype: "json",
+            styleUI: 'Bootstrap4',
             colModel: [
                 { label: 'Id', name: 'Id', width: 75, key: true },
                 { label: 'Código', name: 'Codigo', width: 90 },
@@ -496,7 +582,6 @@
             ],
             viewrecords: true,
             caption: "Documentos cadastrados",
-            styleUI: 'Bootstrap4'
         });
     });
 
