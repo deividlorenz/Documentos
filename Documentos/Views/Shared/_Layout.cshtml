@@ -1,37 +1,42 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-
     <!-- The jQuery library is a prerequisite for all jqSuite products -->
-    <script type="text/ecmascript" src="~/Content/jquery-3.6.0.js"></script>
-    <!-- We support more than 40 localizations -->
-    <script type="text/ecmascript" src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/i18n/grid.locale-pt-br.js"></script>
-    <!-- This is the Javascript file of jqGrid -->
-    <script type="text/ecmascript" src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/jquery.jqGrid.min.js"></script>
-    <!-- validator script-->
-    <script src="~/Scripts/jquery.validate.js"></script>
+    @*<script src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/jquery.min.js"></script>
+        <script src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/jquery-ui.min.js"></script>*@
 
-    <script src="~/Content/bootstrap-4.6.1-dist/js/bootstrap.min.js"></script>
-    <!-- A link to a Boostrap  and jqGrid Bootstrap CSS siles-->
+    @*<script type="text/ecmascript" src="~/Content/jquery-3.6.0.js"></script>*@
+    @*<script src="~/Content/JqueryGrid/js/jquery-1.7.2.min.js"></script>*@
+    <script src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/jquery.min.js"></script>
+    <script src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/i18n/grid.locale-pt-br.js"></script>
     <link rel="stylesheet" href="~/Content/bootstrap-4.6.1-dist/css/bootstrap.min.css">
     <script src="~/Content/fontawesome/js/all.min.js"></script>
     <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
 
-    @*<link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid-bootstrap.css" />*@
 
-    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid-bootstrap4.css" />
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <script src="~/Content/Fileupload/jquery.fileupload-ui.js"></script>
+    <script src="~/Content/Fileupload/jquery.fileupload.js"></script>
+    <script src="~/Content/Fileupload/jquery.iframe-transport.js"></script>
+
+
+
+
+    <script src="~/Content/bootstrap-4.6.1-dist/js/bootstrap.min.js"></script>
+
 
     <link href="~/Content/Toastr/toastr.css" rel="stylesheet" />
     <script src="~/Content/Toastr/toastr.min.js"></script>
 
+    <link href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/jquery-ui.css" rel="stylesheet" />
 
+    <script src="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/js/trirand/jquery.jqGrid.min.js"></script>
 
-    <script>        
-        $.jgrid.defaults.responsive = true;
-        $.jgrid.defaults.styleUI = 'Bootstrap';
-    </script>
+    <link href="~/Content/Guriddo_jqGrid_JS_5_6_X_demo/css/trirand/ui.jqgrid.css" rel="stylesheet" />
 
+    @*<link href="~/Content/JqueryGrid/css/ui.jqgrid.css" rel="stylesheet" />
+        <script src="~/Content/JqueryGrid/js/jquery.jqGrid.min.js"></script>*@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,19 +57,22 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Documentos", "Index", "Documentos")</li>                    
+                    <li>@Html.ActionLink("Documentos", "Index", "Documentos")</li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Documentos Application</p>
-        </footer>
+    <div class="row d-flex justify-content-center">
+        <div class="col-10 col-sm-10">
+            @RenderBody()
+            <hr />
+        </div>
+        
     </div>
-       
+    <footer class="d-flex justify-content-center">
+        <p>&copy; @DateTime.Now.Year - Documentos Application</p>
+    </footer>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

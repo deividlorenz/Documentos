@@ -25,6 +25,8 @@ namespace Documentos
         [Required(ErrorMessage = "*")]
         public float Valor { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        public string FileName { get; set; }
 
     }
 }

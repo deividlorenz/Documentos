@@ -68,7 +68,8 @@ namespace Documentos.DAL
                     Titulo = reader.GetString("title"),
                     Revisao = reader.GetString("rev"),
                     DateRevisao = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
-                    Valor = reader.GetFloat("value")
+                    Valor = reader.GetFloat("value"),
+                    FileName = reader.GetString("filename")
                     });
                 }
 
@@ -106,7 +107,8 @@ namespace Documentos.DAL
                         Titulo = reader.GetString("title"),
                         Revisao = reader.GetString("rev"),
                         DateRevisao = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
-                        Valor = reader.GetFloat("value")
+                        Valor = reader.GetFloat("value"),
+                        FileName = reader.GetString("filename")
                     };
                 }
 
@@ -120,10 +122,6 @@ namespace Documentos.DAL
                 return result;
             }
         }
-
-
-
-
 
 
         public string Save(string mSQL, string[] campos, string[] values, string[] key, bool getid)

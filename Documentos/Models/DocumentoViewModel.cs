@@ -29,5 +29,12 @@ namespace Documentos.Models
         [Required(ErrorMessage = "*")]
         [Display(Name = "Valor do Documento")]
         public float Valor { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Nome do Documento")]
+        public string FileName { get; set; }
+
+
+
     }
 }

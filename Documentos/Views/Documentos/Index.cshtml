@@ -6,8 +6,9 @@
 <style type="text/css">
     * {
         color: #212529;
-    }
-
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+    }   
     error {
         display: none;
         margin-left: 10px;
@@ -27,26 +28,12 @@
     }
 </style>
 
-<div id="jqGridPager">
+<div>
+    <br />
     <div class="row">
-
-        <div class="col-4 col-sm-4 d-flex justify-content-start">
-            <button type="button" class="btn btn-primary" id="add-button"><i class="fas fa-plus-circle"></i> Adicionar</button>
-        </div>
-
-        <div class="col-4 col-sm-4 d-flex justify-content-center">
-            <button type="button" class="btn btn-success" id="edit-button"><i class="far fa-edit"></i> Editar</button>
-        </div>
-
-        <div class="col-4 col-sm-4 d-flex justify-content-end">
-            <button type="button" class="btn btn-danger" id="del-button"><i class="fas fa-trash"></i> Excluir</button><br />
-        </div>
-    </div>
-
-    <div class="row">
-
         <div class="col-12 col-sm-12">
-            <table class="table" id="jqGrid"></table>
+            <table class="table w-100" id="jqGrid"></table>
+            <div id="jqGridPager"></div>
         </div>
     </div>
 
@@ -61,30 +48,30 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Código</span>
                     </div>
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="Codigo" id="add-modal-code" value="" required>
                     </div>
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Título</span>
                     </div>
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="title" id="add-modal-title" value="" required />
                     </div>
                 </div>
 
                 <br />
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Revisão</span>
                     </div>
-                    <div class="col-12 col-sm-9">
-                        <select class="select w-100" name="revision" id="add-modal-revision" value="" required>
+                    <div class="col-12 col-sm-8">
+                        <select class="select w-100 h-100" name="revision" id="add-modal-revision" value="" required>
                             <option value="">Escolha</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
@@ -108,17 +95,18 @@
 
                 <br />
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Valor</span>
                     </div>
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="value" id="add-modal-value" value="" required />
+                        <input type="hidden" class="form-control" name="FileName" id="add-modal-filename" value="-" required />
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="add-modal-fechar">Fechar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="add-modal-fechar"><i class="fas fa-undo-alt"></i> Fechar</button>
                 <button type="button" class="btn btn-success" id="add-modal-save"><i class="fas fa-check"></i> Salvar Alterações</button>
             </div>
         </div>
@@ -129,39 +117,39 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-center">
-                <h5 class="modal-title" id="edit-modal">Editar Documento</h5>
+                <h5 class="modal-title" id="edit-modal">Editar documento</h5>
             </div>
             <input type="hidden" id="edit-modal-id" />
             <div class="modal-body">
 
                 <div class="row">
 
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Código</span>
                     </div>
 
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="Codigo" id="edit-modal-code" value="" />
                     </div>
                 </div>
                 <br />
 
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Título</span>
                     </div>
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="title" id="edit-modal-title" value="" />
                     </div>
                 </div>
 
                 <br />
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Revisão</span>
                     </div>
-                    <div class="col-12 col-sm-9">
-                        <select class="select w-100" name="revision" id="edit-modal-revision">
+                    <div class="col-12 col-sm-8">
+                        <select class="select w-100 h-100" name="revision" id="edit-modal-revision">
                             <option selected>Escolha...</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
@@ -186,21 +174,64 @@
 
                 <br />
                 <div class="row">
-                    <div class="col-12 col-sm-3">
+                    <div class="col-12 col-sm-4">
                         <span class="input-group-text">Valor</span>
                     </div>
-                    <div class="col-12 col-sm-9">
+                    <div class="col-12 col-sm-8">
                         <input type="text" class="form-control" name="value" id="edit-modal-value" value="" />
                     </div>
                 </div>
 
+                <br />
+                <div class="row">
+                    <div class="col-12 col-sm-4">
+                        <span class="input-group-text">Arquivo</span>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <input type="text" class="form-control" name="filename" id="edit-modal-filename" value="" required min="3"/>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit-modal-fechar">Fechar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit-modal-fechar"><i class="fas fa-undo-alt"></i> Fechar</button>
                 <button type="button" class="btn btn-primary" id="edit-modal-save"><i class="fas fa-check"></i> Salvar Alterações</button>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="properties-modal" tabindex="-1" aria-labelledby="Baixar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="properties-modal">Propriedades do arquivo</h5>
+            </div>
+            <br />
+            <div class="modal-body">
+                <input type="hidden" id="properties-modal-id" />                
+                <br />
+                <div class="col-12 col-sm-12">
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="prop-modal-creation"> Código </label>
+                    </span>
+                    <br />
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="prop-modal-extension"> Código </label>
+                    </span>
+                    <br />
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="prop-modal-size"> Código </label>
+                    </span>
+                </div>
+                <br />
+                <div class="modal-footer d-flex justify-content-start">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="properties-modal-cancelar"><i class="fas fa-undo-alt"></i> Cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -209,16 +240,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-center">
-                <h5 class="modal-title" id="del-modal">Deletar Documento</h5>
+                <h5 class="modal-title" id="del-modal">Deletar documento</h5>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="del-modal-id" />
-                <input type="hidden" id="#del-modal-code" />
+                <input type="hidden" id="del-modal-code" />
                 <input type="hidden" id="del-modal-title" />
                 <input type="hidden" id="del-modal-revision" />
                 <input type="hidden" id="del-modal-planned-date" />
                 <input type="hidden" id="del-modal-value" />
-
 
                 <div class="col-12 col-sm-12 d-flex justify-content-center">
                     <h4 class="modal-title" id="del-title">Excluir o registro? </h4><br />
@@ -236,16 +266,61 @@
                         <label id="del-modal-label-title"> Título </label>
                     </span>
                 </div>
+                <br />
+                <div class="col-12 col-sm-12">
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="del-modal-label-filename"> Título </label>
+                    </span>
+                </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="del-modal-cancelar">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="del-modal-cancelar"><i class="fas fa-undo-alt"></i> Cancelar</button>
                 <button type="button" class="btn btn-danger" id="del-modal-del"><i class="fas fa-check"></i> Excluir Registro</button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="import-modal" tabindex="-1" aria-labelledby="Importar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="import-modal">Importar arquivo</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="import-modal-id" />
+                <div class="col-12 col-sm-12 mb-3">
+                    <form id="send-file" runat="server" method="post" enctype="multipart/form-data">
+                        <input type="file" name="import-modal-file" class="form-control w-100 h-100" id="import-modal-file" />
+                    </form>
+                </div>
+                <br />
+            </div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="import-modal-cancelar"><i class="fas fa-undo-alt"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="download-modal" tabindex="-1" aria-labelledby="Baixar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="download-modal">Baixar arquivo</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="download-modal-id" />
+                <div class="col-12 col-sm-12 mb-3">
+                    <form id="download-file" runat="server" method="post" enctype="multipart/form-data">
+                    </form>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
@@ -271,11 +346,11 @@
     function isValidate(typeModal) {
 
         var isValid = true;
-        
+
 
         var inputCode = $("#" + typeModal + "-modal-code").val();
         if (inputCode) {
-            
+
             $("#" + typeModal + "-modal-code").removeClass("invalid").addClass("valid");
         }
         else {
@@ -325,99 +400,18 @@
             isValid = false;
         }
 
+        var inputFileName = $("#" + typeModal + "-modal-filename").val();
+       
+        if (inputFileName) {
+            $("#" + typeModal + "-modal-filename").removeClass("invalid").addClass("valid");
+        }
+        else {
+            $("#" + typeModal + "-modal-filename").removeClass("valid").addClass("invalid");
+            isValid = false;
+        }
+
         return isValid;
     }
-
-
-
-    $(document).on("click", "#add-button", function () {
-
-        $("#add-modal").modal("show");
-
-    });
-
-    $(document).on("click", "#edit-button", function () {
-
-        $("#edit-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
-        if ($("#edit-modal-id").val() == '') {
-            toastr.error("Selecione um documento para edição", "Documentos");
-            $("#edit-modal").modal("hide")
-        }
-        else {
-
-            $.ajax({
-                type: "POST",
-                url: "Documentos/Get",
-                data: {
-                    id: +  $("#edit-modal-id").val()
-                },
-
-                success: function (data) {
-                    if (data.success) {
-                        $("#edit-modal-code").val(data.documento.Codigo)
-                        $("#edit-modal-title").val(data.documento.Titulo)
-                        $("#edit-modal-revision").val(data.documento.Revisao)
-                        var getdate = data.documento.DateRevisao;
-                        var re = "/";
-                        var novadate = getdate.split(re);
-                        novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
-                        $("#edit-modal-planned-date").val(novadate)
-                        $("#edit-modal-value").val(data.documento.Valor)
-                        $("#edit-modal").modal("show")
-                    }
-                    else {
-
-                    }
-                },
-                error: function (data) {
-                }
-            });
-        }
-    });
-
-    $(document).on("click", "#del-button", function () {
-
-        $("#del-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
-
-        if ($("#del-modal-id").val() == '') {
-            toastr.error("Selecione um documento para exclusão", "Documentos");
-            $("#del-modal").modal("hide")
-        }
-        else {
-
-            $("#del-modal").modal("show")
-            $.ajax({
-                type: "POST",
-                url: "Documentos/Get",
-                data: {
-                    id: +  $("#del-modal-id").val()
-                },
-
-                success: function (data) {
-                    if (data.success) {
-                        $("#del-modal-code").val(data.documento.Codigo)
-                        document.getElementById("del-modal-label-code").innerHTML = " Código: " + (data.documento.Codigo);
-                        document.getElementById("del-modal-label-title").innerHTML = "Título: " + (data.documento.Titulo);
-                        $("#del-modal-title").val(data.documento.Titulo)
-                        $("#del-modal-revision").val(data.documento.Revisao)
-                        $("#del-modal-planned-date").val(data.documento.DateRevisao)
-                        $("#del-modal-value").val(data.documento.Valor)
-
-                    }
-                    else {
-
-                    }
-                },
-                error: function (data) {
-                }
-            });
-        }
-
-
-
-
-
-    });
 
     $(document).on("click", "#add-modal-fechar", function () {
 
@@ -425,22 +419,47 @@
         $("#add-modal-title").val("")
         $("#add-modal-revision").val("")
         $("#add-modal-planned-date").val("")
-        $("#add-modal-value").val("")       
-        $('#add-modal-code').removeClass("invalid");
-        $('#add-modal-title').removeClass("invalid")
-        $('#add-modal-revision').removeClass("invalid")
-        $('#add-modal-planned-date').removeClass("invalid")
-        $('#add-modal-value').removeClass("invalid")
+        $("#add-modal-value").val("")
+        $('#add-modal-code').removeClass("valid invalid");
+        $('#add-modal-title').removeClass("valid invalid")
+        $('#add-modal-revision').removeClass("valid invalid")
+        $('#add-modal-planned-date').removeClass("valid invalid")
+        $('#add-modal-value').removeClass("valid invalid")
         $("#add-modal").modal("hide")
 
     });
 
     $(document).on("click", "#edit-modal-fechar", function () {
+        $("#edit-modal-code").val("")
+        $("#edit-modal-title").val("")
+        $("#edit-modal-revision").val("")
+        $("#edit-modal-planned-date").val("")
+        $("#edit-modal-value").val("")
+        $('#edit-modal-code').removeClass("valid invalid");
+        $('#edit-modal-title').removeClass("valid invalid")
+        $('#edit-modal-revision').removeClass("valid invalid")
+        $('#edit-modal-planned-date').removeClass("valid invalid")
+        $('#edit-modal-value').removeClass("valid invalid")
+        $('#edit-modal-filename').removeClass("valid invalid")
         $("#edit-modal").modal("hide")
     });
 
     $(document).on("click", "#del-modal-cancelar", function () {
         $("#del-modal").modal("hide")
+    });
+
+    $(document).on("click", "#import-modal-cancelar", function () {
+        $("#import-modal-id").val("");
+        $("#import-modal-file").val("");
+        $("#import-modal").modal("hide");
+    });
+
+    $(document).on("click", "#properties-modal-cancelar", function () {
+
+        $("#prop-modal-creation").val = "";
+        $("#prop-modal-extension").val = "";
+        $("#prop-modal-size").val = "";
+        $("#properties-modal").modal("hide");
     });
 
     $(document).on("click", "#add-modal-save", function () {
@@ -460,35 +479,38 @@
                 success: function (data) {
                     if (data.success) {
                         toastr.success("Gravação efetuada com sucesso!", "Documentos");
-                        $("#add-modal-code").val("")
-                        $("#add-modal-title").val("")
-                        $("#add-modal-revision").val("")
-                        $("#add-modal-planned-date").val("")
-                        $("#add-modal-value").val("")
-                        $("#add-modal").modal("hide")
-                        $("#add-modal").modal("hide")
-                        $("#jqGrid").trigger('reloadGrid')
+                        $("#add-modal-code").val("");
+                        $("#add-modal-title").val("");
+                        $("#add-modal-revision").val("");
+                        $("#add-modal-planned-date").val("");
+                        $("#add-modal-value").val("");
+                        $("#add-modal").modal("hide");
+                        $("#add-modal").modal("hide");                       
                     }
                     else {
 
-                        toastr.warning("Gravação efetuada com sucesso!", "Documentos");
+                        toastr.warning("Gravação não efetuada!", "Documentos");
                     }
                 },
                 error: function (data) {
                     toastr.error("Gravação não efetuada!", "Documentos");
                 }
-            
+
             });
         }
         else {
 
-            toastr.error("Erro! Verifique os campos inválidos" ,"Documentos");
+            toastr.error("Erro! Verifique os campos inválidos", "Documentos");
         }
     });
 
     $(document).on("click", "#edit-modal-save", function () {
 
         if (isValidate("edit")) {
+
+            var EditName = $("#edit-modal-filename").val();
+            var NewName = EditName.replace(/[^\w\s]/gi, '');
+
 
             $.ajax({
                 type: "POST",
@@ -499,13 +521,13 @@
                     title: $("#edit-modal-title").val(),
                     revision: $("#edit-modal-revision").val(),
                     plannedDate: $("#edit-modal-planned-date").val(),
-                    value: $("#edit-modal-value").val()
+                    value: $("#edit-modal-value").val(),
+                    filename: NewName
                 },
                 success: function (data) {
                     if (data.success) {
                         toastr["info"]("Alteração efetuada com sucesso!", "Documentos");
-                        $("#edit-modal").modal("hide")
-                        $("#jqGrid").trigger('reloadGrid')
+                        $("#edit-modal").modal("hide");                       
                     }
                     else {
 
@@ -535,10 +557,9 @@
             },
             success: function (data) {
                 if (data.success) {
-                    toastr.success("Registro deletado com sucesso!","Documento")
+                    toastr.success("Registro deletado com sucesso!", "Documento")
                     $("#del-modal-id").val("")
-                    $("#del-modal").modal("hide")
-                    $("#jqGrid").trigger('reloadGrid')
+                    $("#del-modal").modal("hide")                   
                 }
                 else {
                     toastr.error("Falha ao excluir o registro!", "Documento")
@@ -548,7 +569,6 @@
             }
         });
     });
-
 
     $(document).ready(function () {
 
@@ -562,28 +582,372 @@
                 order: "sortOrder"
             },
             mtype: 'POST',
-            loadonce: false,
+            loadonce: true,           
             gridview: true,
             autoencode: true,
             autowidth: true,
-
             height: "auto",
-            width: "auto",
+            shrinkToFit: true,
             url: 'Documentos/list',
-            datatype: "json",
-            styleUI: 'Bootstrap4',
+            datatype: "json",               
             colModel: [
                 { label: 'Id', name: 'Id', width: 75, key: true },
                 { label: 'Código', name: 'Codigo', width: 90 },
                 { label: 'Título', name: 'Titulo', width: 100 },
                 { label: 'Revisão', name: 'Revisao', width: 80 },
                 { label: 'Data Planejada', name: 'DateRevisao', width: 80 },
-                { label: 'Valor', name: 'Valor', width: 80 }
+                { label: 'Valor', name: 'Valor', width: 80 },
+                { label: 'Arquivo', name: 'FileName', width: 80 }
+
             ],
             viewrecords: true,
+            rowNum: 20,
+            pager: "#jqGridPager",
             caption: "Documentos cadastrados",
+            reloadAfterSubmit: true,
+            ondblClickRow: function (rowId) {
+                $("#btn_edit").click();
+            },
+            afterSubmit: function () {
+                $(this).jqGrid("setGridParam", { datatype: 'json' });
+                return [true];
+            },
+           
+
         });
+
+
+        $('#jqGrid').jqGrid('navGrid', "#jqGridPager", {
+            search: false,
+            add: false,
+            edit: false,
+            del: false,
+            refresh: false
+            
+        });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-trash",
+                caption: "",
+                title: "Excluir",
+                id: "btn_del",
+                position: "first",
+                onClickButton: function () {
+
+                    $("#del-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+                    if ($("#del-modal-id").val() == '') {
+                        toastr.error("Selecione um documento para exclusão", "Documentos");
+                        $("#del-modal").modal("hide")
+                    }
+                    else {
+
+                        $("#del-modal").modal("show")
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/Get",
+                            data: {
+                                id: +  $("#del-modal-id").val()
+                            },
+
+                            success: function (data) {
+                                if (data.success) {
+                                    $("#del-modal-code").val(data.documento.Codigo)
+                                    document.getElementById("del-modal-label-code").innerHTML = " Código: " + (data.documento.Codigo);
+                                    document.getElementById("del-modal-label-title").innerHTML = "Título: " + (data.documento.Titulo);
+                                    document.getElementById("del-modal-label-filename").innerHTML = "Anexo: " + (data.documento.FileName);
+                                    $("#del-modal-title").val(data.documento.Titulo)
+                                    $("#del-modal-revision").val(data.documento.Revisao)
+                                    $("#del-modal-planned-date").val(data.documento.DateRevisao)
+                                    $("#del-modal-value").val(data.documento.Valor)
+
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }
+
+                }
+            });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-arrowstop-1-s",
+                caption: "",
+                title: "Baixar arquivo",
+                id: "btn_download",
+                position: "first",
+                onClickButton: function () {
+                    $("#download-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+                    if ($("#download-modal-id").val() == '') {
+                        toastr.error("Selecione um cadastro para baixar o arquivo!", "Documentos");
+                    }
+                    else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/VerificaArquivo",
+                            data: {
+                                id: +  $("#download-modal-id").val()
+                            },
+
+                            success: function (data) {
+                                if (data.success) {
+                                    window.location = "Documentos/Download?id=" + $("#download-modal-id").val();
+                                    toastr.success("Arquivo baixado com sucesso!", "Documentos");
+                                }
+                                else {
+
+                                    if (data.resp == "ausente") {
+                                        toastr.warning("Arquivo ausente! Removido registro no banco", "Documentos");
+                                    }
+                                    else {
+                                        toastr.warning("Não há anexos neste cadastro!", "Documentos");
+                                    }
+
+                                   
+                                }
+                            },
+                            error: function (data) {
+
+                                toastr.error("Erro ao baixar", "Documentos");
+                                
+                            }
+                        });
+                    }
+                }
+            });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-document",
+                caption: "",
+                title: "Propriedades do anexo",
+                id: "btn_properties",
+                position: "first",
+                onClickButton: function () {
+                    $("#properties-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+                    if ($("#properties-modal-id").val() == '') {
+                        toastr.error("Selecione um cadastro para verificar as propriedades!", "Documentos");
+                    }
+                    else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/Properties",
+                            data: {
+                                id: $("#properties-modal-id").val()
+                            },
+                            success: function (data) {
+                                if (data.success) {
+
+                                    document.getElementById("prop-modal-creation").innerHTML = " Data de criação: " + (data.propfiles.CreationTime);
+                                    document.getElementById("prop-modal-extension").innerHTML = " Extensão: " + (data.propfiles.Extension);
+                                    document.getElementById("prop-modal-size").innerHTML = " Tamanho: " + (data.propfiles.Length);
+                                    $("#properties-modal").modal("show");
+
+                                }
+                                else {
+
+                                    toastr.warning("Não há arquivo cadastrado para exibir as propriedades!", "Documentos");
+                                }
+                            },
+                            error: function (data) {
+
+                                toastr.error("Erro ao buscar a informação dos arquivos!", "Documentos");
+                            }
+
+                        });
+
+                    }
+                }
+            });
+        
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-circle-arrow-n",
+                caption: "",
+                title: "Importar arquivo",
+                id: "btn_import-file",
+                position: "first",
+                onClickButton: function () {
+
+                    $("#import-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+                    if ($("#import-modal-id").val() == '') {
+                        toastr.error("Selecione um cadastro para importação!", "Documentos");
+                    }
+                    else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/Get",
+                            data: {
+                                id: +  $("#import-modal-id").val()
+                            },
+
+                            success: function (data) {
+                                if (data.success) {
+                                    $("#import-modal-code").val(data.documento.Codigo);
+                                    $("#import-modal-title").val(data.documento.Titulo);
+                                    $("#import-modal-revision").val(data.documento.Revisao);
+                                    var getdate = data.documento.DateRevisao;
+                                    var re = "/";
+                                    var novadate = getdate.split(re);
+                                    novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
+                                    $("#import-modal-planned-date").val(novadate);
+                                    $("#import-modal-value").val(data.documento.Valor);
+                                    $("#import-modal").modal("show");
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }
+                }
+            });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: " ui-icon-pencil",
+                caption: "",
+                title: "Editar",
+                id: "btn_edit",
+                position: "first",
+                onClickButton: function () {
+
+                    $("#edit-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+                    if ($("#edit-modal-id").val() == '') {
+                        toastr.error("Selecione um documento para edição", "Documentos");
+                    }
+                    else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/Get",
+                            data: {
+                                id: +  $("#edit-modal-id").val()
+                            },
+
+                            success: function (data) {
+                                if (data.success) {
+                                    $("#edit-modal-code").val(data.documento.Codigo);
+                                    $("#edit-modal-title").val(data.documento.Titulo);
+                                    $("#edit-modal-revision").val(data.documento.Revisao);
+                                    var getdate = data.documento.DateRevisao;
+                                    var re = "/";
+                                    var novadate = getdate.split(re);
+                                    novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
+                                    $("#edit-modal-planned-date").val(novadate);
+                                    $("#edit-modal-value").val(data.documento.Valor);
+                                    $("#edit-modal-filename").val(data.documento.FileName);
+                                    $("#edit-modal").modal("show");
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }
+                }
+            });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-plus",
+                caption: "",
+                title: "Adicionar",
+                id: "btn_add",
+                position: "first",
+                onClickButton: function () {
+
+                    $("#add-modal").modal("show");
+                    
+                }
+            });
+
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-refresh",
+                caption: "",
+                title: "Recarregar",
+                id: "btn_ReloadTeste",
+                position: "last",
+                onClickButton: function () {
+                                   
+                    $("#jqGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1 }]);                 
+
+                }
+            });
+
+
+
+
     });
+
+    $('#send-file').fileUploadUI({
+        maxFileSize: 2097151000,
+        minFilesize: 00000001,
+        sequentialUploads: false,
+        dragDropSupport: false,
+        fileInputFilter: '#import-modal-file',
+        url: 'Documentos/ImportFile',
+        method: 'POST',
+        beforeSend: function (event, files, index, xhr, handler, callBack) {
+
+            handler.formData = [{ name: 'documentId', value: $("#import-modal-id").val() }];
+            callBack();
+        },
+        onError: function (event, files, index, xhr, handler) {
+
+            toastr.error("Ops!");
+
+        },
+        onComplete: function (event, files, index, xhr, handler) {
+
+            var result = handler.response.resp;
+
+            switch (result) {
+                case "existe": toastr.error("Arquivo já cadastrado!", "Documentos");
+                    break;
+                case "vazio": toastr.error("Arquivo vazio não permitido!", "Documentos");
+                    break;
+                case "sucesso": toastr.success("Arquivo anexado com sucesso!", "Documentos");
+                    break;
+                case "falhou": toastr.warning("Falha no carregamento do arquivo!", "Documentos");
+                    break;
+                case "nomelongo": toastr.error("Arquivo com nome longo não permitido!", "Documentos");
+                    break;
+                case "falhousub": toastr.error("Falha ao sobrescrever o arquivo anterior!", "Documentos");
+                    break;
+
+                case "banco": toastr.warning("Gravar no banco!", "Documentos");
+                    break;
+
+            }
+
+            $("#import-modal-id").val("");
+            $("#import-modal-file").val("");
+            $("#import-modal").modal("hide");
+            $("#jqGrid").trigger('reloadGrid');
+        },
+    });
+
+
+
+
 
 </script>
 
