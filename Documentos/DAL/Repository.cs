@@ -46,6 +46,33 @@ namespace Documentos.DAL
         }
 
 
+        public MySqlDataReader getReaderWithParameters(string mSQL, Dictionary<string, string> parameters)
+        {
+            MySqlDataReader reader = null;
+
+            try
+            {
+                if (conexaoMySQL.State != ConnectionState.Open)
+                    conexaoMySQL.Open();
+
+                MySqlCommand cmd = new MySqlCommand(mSQL, conexaoMySQL);
+                foreach (var item in parameters)
+                {
+                    cmd.Parameters.AddWithValue(item.Key, item.Value);
+                }
+                reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            }
+            catch (MySqlException msqle)
+            {
+                // MessageBox.Show("Erro de acesso ao MySQL : " + msqle.Message, "Erro");
+                string strErro = msqle.Message;
+            }
+
+            return reader;
+        }
+
+
         public List<Documento> LoadDados()
         {
             string strSQL = "SELECT * FROM documento";
@@ -64,11 +91,11 @@ namespace Documentos.DAL
                 {
                     result.Add(new Documento { 
                     Id = reader.GetInt32("id"),
-                    Codigo = reader.GetString("code"),
-                    Titulo = reader.GetString("title"),
-                    Revisao = reader.GetString("rev"),
-                    DateRevisao = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
-                    Valor = reader.GetFloat("value"),
+                    Code = reader.GetString("code"),
+                    Title = reader.GetString("title"),
+                    Rev = reader.GetString("rev"),
+                    Planned_Date = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
+                    DocValue = reader.GetFloat("DocValue"),
                     FileName = reader.GetString("filename")
                     });
                 }
@@ -83,6 +110,165 @@ namespace Documentos.DAL
                 return result;
             }
         }
+
+        public int CountDados()
+        {
+            string strSQL = "SELECT COUNT(*) FROM documento";
+
+            var connection = new Repository();
+
+            int result = 0;
+
+            try
+            {
+
+                var reader = connection.getReader(strSQL);
+
+
+                if (reader.Read())
+                {
+                    result = reader.GetInt32(0);
+                }
+
+                reader.Close();
+                this.conexaoMySQL.Close();
+
+                return result;
+            }
+            catch
+            {
+                return result;
+            }
+        }
+
+
+        public List<Documento> LoadDados(string sortField, string sortOrder, bool isSearch, int pageIndex, int pageSize, string filters, string searchField, string searchString, string searchOper)
+        {
+            var offset = (pageIndex - 1) * pageSize;
+
+            if (sortField == "")
+            {
+                sortField = "Id";
+                sortOrder = "ASC";
+            }
+            if (searchString == "")
+            {
+                searchString = "0";
+            }
+            if (searchField == "")
+            {
+                searchField = "Id";
+            }
+
+            var dictionary = new Dictionary<string, string>();
+
+            switch (searchOper)
+            {
+                case "eq": //igual a 
+                    searchOper = "=";
+                    dictionary.Add("@SearchString", $"{searchString}");
+                    searchString = "@SearchString";
+                    break;
+                case "ne": //diferente de
+                    searchOper = "!=";
+                    break;
+                case "bw": //inicia com
+                    searchOper = "LIKE";
+                    dictionary.Add("@SearchString", $"{searchString}%");
+                    searchString = "@SearchString";                    
+                    break;
+                case "bn": //nao inicia com
+                    searchOper = "NOT LIKE";
+                    dictionary.Add("@SearchString", $"{searchString}%");
+                    searchString = "@SearchString";                   
+                    break;
+                case "ew": //termina com
+                    searchOper = "LIKE";
+                    dictionary.Add("@SearchString", $"%{searchString}");
+                    searchString = "@SearchString";                    
+                    break;
+                case "en": //não termina com
+                    searchOper = "NOT LIKE";
+                    dictionary.Add("@SearchString", $"%{searchString}");
+                    searchString = "@SearchString";                    
+                    break;
+                case "cn": //contém
+                    searchOper = "LIKE";
+                    dictionary.Add("@SearchString", $"%{searchString}%");
+                    searchString = "@SearchString";                    
+                    break;
+                case "nc": //Não contém
+                    searchOper = "NOT LIKE";
+                    dictionary.Add("@SearchString", $"%{searchString}%");
+                    searchString = "@SearchString";                    
+                    break;
+                case "nu": //null
+                    searchOper = "IS NULL";
+                    searchString = "";
+                    dictionary.Add("@SearchString", $"{searchString}");
+                    searchString = "@SearchString";                    
+                    break;
+                case "nn": //not null
+                    searchOper = "IS NOT NULL";
+                    searchString = "";
+                    dictionary.Add("@SearchString", $"{searchString}");
+                    searchString = "@SearchString";
+                    break;
+                case "in": //está em
+                    searchOper = "IN";
+                    dictionary.Add("@SearchString", $"{searchString}");
+                    searchString = "@SearchString";                    
+                    break;
+                case "ni": //não está em
+                    searchOper = "NOT IN";
+                    dictionary.Add("@SearchString", $"{searchString}");
+                    searchString = "@SearchString";                    
+                    break;
+                default:
+                    searchOper = ">";
+                    break;
+
+            }
+
+                
+
+            string strSQL = $"SELECT * FROM documento WHERE {searchField} {searchOper} {searchString} ORDER BY {sortField} {sortOrder} LIMIT {offset}, {pageSize}";
+
+            var connection = new Repository();
+
+            var result = new List<Documento>();
+
+            try
+            {
+
+                var reader = connection.getReaderWithParameters(strSQL, dictionary);
+
+
+                while (reader.Read())
+                {
+                    result.Add(new Documento
+                    {
+                        Id = reader.GetInt32("id"),
+                        Code = reader.GetString("code"),
+                        Title = reader.GetString("title"),
+                        Rev = reader.GetString("rev"),
+                        Planned_Date = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
+                        DocValue = reader.GetFloat("DocValue"),
+                        FileName = reader.GetString("filename")
+                    });
+                }
+
+                reader.Close();
+                this.conexaoMySQL.Close();
+
+                return result;
+            }
+            catch
+            {
+                return result;
+            }
+        }
+
 
 
         public Documento Get(int id)
@@ -103,11 +289,11 @@ namespace Documentos.DAL
                 {
                     result = new Documento
                     {
-                        Codigo = reader.GetString("code"),
-                        Titulo = reader.GetString("title"),
-                        Revisao = reader.GetString("rev"),
-                        DateRevisao = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
-                        Valor = reader.GetFloat("value"),
+                        Code = reader.GetString("code"),
+                        Title = reader.GetString("title"),
+                        Rev = reader.GetString("rev"),
+                        Planned_Date = reader.GetDateTime("planned_date").ToString("dd/MM/yyyy"),
+                        DocValue = reader.GetFloat("DocValue"),
                         FileName = reader.GetString("filename")
                     };
                 }

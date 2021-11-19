@@ -1,0 +1,15 @@
+1- Hemograma completo
+2- Glicemia de jejum
+3- Creatinina
+4- Uréia
+5- Colesterol total
+6- Triglicerídeos
+7- TSH e T4 livre
+8- Vitamina D
+9- GAMA GT
+10- TGO
+11- TGP
+12- Acido úrico
+13- Amilase
+14- Urina
+15- PSA ( para homens)

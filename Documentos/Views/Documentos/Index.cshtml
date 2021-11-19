@@ -6,9 +6,18 @@
 <style type="text/css">
     * {
         color: #212529;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         font-size: 14px;
-    }   
+    }
+
+    body {
+        background-color: lightsteelblue;
+    }
+
+    table {
+        font-weight: 800;
+    }
+
     error {
         display: none;
         margin-left: 10px;
@@ -26,6 +35,19 @@
     input.valid, textarea.valid, form-control.valid, select.valid {
         border: 2px solid green;
     }
+
+    .ui-jqgrid-caption {
+        text-align: center !important;        
+    }
+
+    .modal-content {
+        background-color: lightsteelblue;
+    }
+    .modal-backdrop {
+        background-color: #0000ff;
+    }
+
+
 </style>
 
 <div>
@@ -34,6 +56,8 @@
         <div class="col-12 col-sm-12">
             <table class="table w-100" id="jqGrid"></table>
             <div id="jqGridPager"></div>
+
+          
         </div>
     </div>
 
@@ -188,7 +212,7 @@
                         <span class="input-group-text">Arquivo</span>
                     </div>
                     <div class="col-12 col-sm-8">
-                        <input type="text" class="form-control" name="filename" id="edit-modal-filename" value="" required min="3"/>
+                        <input type="text" class="form-control" name="filename" id="edit-modal-filename" value="" required min="3" />
                     </div>
                 </div>
 
@@ -212,7 +236,7 @@
             </div>
             <br />
             <div class="modal-body">
-                <input type="hidden" id="properties-modal-id" />                
+                <input type="hidden" id="properties-modal-id" />
                 <br />
                 <div class="col-12 col-sm-12">
                     <span class="input-group-text justify-content-md-center">
@@ -277,6 +301,36 @@
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="del-modal-cancelar"><i class="fas fa-undo-alt"></i> Cancelar</button>
                 <button type="button" class="btn btn-danger" id="del-modal-del"><i class="fas fa-check"></i> Excluir Registro</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delAnexo-modal" tabindex="-1" aria-labelledby="Deletar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="delAnexo-modal">Remover anexo</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="delAnexo-modal-id" />
+
+                <div class="col-12 col-sm-12 d-flex justify-content-center">
+                    <h4 class="modal-title" id="delAnexo-title">Remover o seguinte anexo? </h4><br />
+                </div>
+                <br />
+                <div class="col-12 col-sm-12">
+                    <span class="input-group-text justify-content-md-center">
+                        <label id="delAnexo-modal-label-filename"> FileName </label>
+
+                    </span>
+                </div>
+                <br />
+
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="delAnexo-modal-cancelar"><i class="fas fa-undo-alt"></i> Cancelar</button>
+                <button type="button" class="btn btn-danger" id="delAnexo-modal-del"><i class="fas fa-check"></i> Excluir </button>
             </div>
         </div>
     </div>
@@ -401,7 +455,7 @@
         }
 
         var inputFileName = $("#" + typeModal + "-modal-filename").val();
-       
+
         if (inputFileName) {
             $("#" + typeModal + "-modal-filename").removeClass("invalid").addClass("valid");
         }
@@ -427,6 +481,7 @@
         $('#add-modal-value').removeClass("valid invalid")
         $("#add-modal").modal("hide")
 
+
     });
 
     $(document).on("click", "#edit-modal-fechar", function () {
@@ -442,6 +497,11 @@
         $('#edit-modal-value').removeClass("valid invalid")
         $('#edit-modal-filename').removeClass("valid invalid")
         $("#edit-modal").modal("hide")
+    });
+
+    $(document).on("click", "#delAnexo-modal-cancelar", function () {
+        $("delAnexo-modal-label-filename").val = "";
+        $("#delAnexo-modal").modal("hide")
     });
 
     $(document).on("click", "#del-modal-cancelar", function () {
@@ -470,11 +530,12 @@
                 type: "POST",
                 url: "Documentos/Add",
                 data: {
-                    code: $("#add-modal-code").val(),
-                    title: $("#add-modal-title").val(),
-                    revision: $("#add-modal-revision").val(),
-                    plannedDate: $("#add-modal-planned-date").val(),
-                    value: $("#add-modal-value").val()
+                    Code: $("#add-modal-code").val(),
+                    Title: $("#add-modal-title").val(),
+                    Rev: $("#add-modal-revision").val(),
+                    Planned_Date: $("#add-modal-planned-date").val(),
+                    DocValue: $("#add-modal-value").val(),
+                    FileName: "-",
                 },
                 success: function (data) {
                     if (data.success) {
@@ -485,7 +546,8 @@
                         $("#add-modal-planned-date").val("");
                         $("#add-modal-value").val("");
                         $("#add-modal").modal("hide");
-                        $("#add-modal").modal("hide");                       
+                        $("#jqGrid").trigger('reloadGrid');
+
                     }
                     else {
 
@@ -510,24 +572,27 @@
 
             var EditName = $("#edit-modal-filename").val();
             var NewName = EditName.replace(/[^\w\s]/gi, '');
-
+            if (NewName == "") {
+                NewName = "-";
+            }
 
             $.ajax({
                 type: "POST",
                 url: "Documentos/Edit",
                 data: {
-                    id: $("#edit-modal-id").val(),
-                    code: $("#edit-modal-code").val(),
-                    title: $("#edit-modal-title").val(),
-                    revision: $("#edit-modal-revision").val(),
-                    plannedDate: $("#edit-modal-planned-date").val(),
-                    value: $("#edit-modal-value").val(),
-                    filename: NewName
+                    Id: $("#edit-modal-id").val(),
+                    Code: $("#edit-modal-code").val(),
+                    Title: $("#edit-modal-title").val(),
+                    Rev: $("#edit-modal-revision").val(),
+                    Planned_Date: $("#edit-modal-planned-date").val(),
+                    DocValue: $("#edit-modal-value").val(),
+                    FileName: NewName,
                 },
                 success: function (data) {
                     if (data.success) {
                         toastr["info"]("Alteração efetuada com sucesso!", "Documentos");
-                        $("#edit-modal").modal("hide");                       
+                        $("#edit-modal").modal("hide");
+                        $("#jqGrid").trigger('reloadGrid');
                     }
                     else {
 
@@ -548,18 +613,14 @@
             type: "POST",
             url: "Documentos/Del",
             data: {
-                id: $("#del-modal-id").val(),
-                code: $("#del-modal-code").val(),
-                title: $("#del-modal-title").val(),
-                revision: $("#del-modal-revision").val(),
-                plannedDate: $("#del-modal-planned-date").val(),
-                value: $("#del-modal-value").val()
+                Id: $("#del-modal-id").val(),
             },
             success: function (data) {
                 if (data.success) {
                     toastr.success("Registro deletado com sucesso!", "Documento")
                     $("#del-modal-id").val("")
-                    $("#del-modal").modal("hide")                   
+                    $("#del-modal").modal("hide")
+                    $("#jqGrid").trigger('reloadGrid');
                 }
                 else {
                     toastr.error("Falha ao excluir o registro!", "Documento")
@@ -569,6 +630,34 @@
             }
         });
     });
+
+    $(document).on("click", "#delAnexo-modal-del", function () {
+        $.ajax({
+            type: "POST",
+            url: "Documentos/RemoveArquivo",
+            data: {
+                Id: +  $("#delAnexo-modal-id").val()
+            },
+
+            success: function (data) {
+                if (data.success) {
+
+                    toastr.success("Anexo removido com sucesso!", "Documentos");
+                    $("#delAnexo-modal").modal("hide");
+                    $("#jqGrid").trigger('reloadGrid');
+
+                }
+                else {
+                    toastr.error("Cadastro sem anexo!", "Documentos");
+                    $("#delAnexo-modal").modal("hide")
+                }
+            },
+            error: function (data) {
+            }
+        });
+    });
+
+
 
     $(document).ready(function () {
 
@@ -582,55 +671,103 @@
                 order: "sortOrder"
             },
             mtype: 'POST',
-            loadonce: true,           
+            postData: {
+                filters: JSON.stringify({
+                    groupOp: "AND", rules: []
+                }), searchString: '', searchField: '', searchOper: ''
+            },
+
             gridview: true,
             autoencode: true,
             autowidth: true,
             height: "auto",
             shrinkToFit: true,
             url: 'Documentos/list',
-            datatype: "json",               
+            datatype: function (data) {
+                $.ajax({
+                    type: "POST",
+                    url: "Documentos/GetAll",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=iso-8859-1",
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+
+                        var grid = $("#jqGrid")[0];
+                        grid.addJSONData(data);
+
+                    },
+                    error: function (data) {
+
+                    }
+                });
+            },
+            jsonReader: {
+                root: "rows",
+                page: "page",
+                total: "totalpages",
+                records: "totalrecords",
+                cell: "cell",
+                id: "Id",
+                repeatitems: true,
+                userdata: "userData"
+            },
             colModel: [
-                { label: 'Id', name: 'Id', width: 75, key: true },
-                { label: 'Código', name: 'Codigo', width: 90 },
-                { label: 'Título', name: 'Titulo', width: 100 },
-                { label: 'Revisão', name: 'Revisao', width: 80 },
-                { label: 'Data Planejada', name: 'DateRevisao', width: 80 },
-                { label: 'Valor', name: 'Valor', width: 80 },
-                { label: 'Arquivo', name: 'FileName', width: 80 }
+                { label: 'Id', name: 'Id', width: 25, key: true, align: 'center' },
+                { label: 'Código', name: 'Code', width: 50, align: 'center' },
+                { label: 'Título', name: 'Title', width: 100, align: 'center' },
+                { label: 'Revisão', name: 'Rev', width: 25, align: 'center' },
+                { label: 'Data Planejada', name: 'Planned_Date', width: 50, align: 'center' },
+                { label: 'Valor', name: 'DocValue', width: 50, align: 'center' },
+                { label: 'Arquivo', name: 'FileName', width: 200, align: 'center' }
 
             ],
             viewrecords: true,
             rowNum: 20,
-            pager: "#jqGridPager",
-            caption: "Documentos cadastrados",
-            reloadAfterSubmit: true,
+            menubar: true,
+            pager: $("#jqGridPager"), 
+            rowList: [20, 40, 80],
+            caption: "Documentos Cadastrados",            
             ondblClickRow: function (rowId) {
                 $("#btn_edit").click();
-            },
-            afterSubmit: function () {
-                $(this).jqGrid("setGridParam", { datatype: 'json' });
-                return [true];
-            },
-           
-
+            }
         });
 
-
         $('#jqGrid').jqGrid('navGrid', "#jqGridPager", {
-            search: false,
+            search: true,
             add: false,
             edit: false,
             del: false,
             refresh: false
-            
         });
+
+        $("#jqGrid").jqGrid('menubarAdd', [
+            {
+                id: 'addmenuitem',                
+                title: 'Adicionar',
+                click: function (event) {
+                    $('#btn_add').click();
+                }
+            },
+            {
+                divider: true,
+            },          
+            {
+                id: 'reloadmenuitem',
+                title: 'Recarregar',
+                click: function (event) {
+                    $('#btn_Reload').click();
+                }
+            }
+
+        ]);
+
 
         jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
             {
                 buttonicon: "ui-icon-trash",
                 caption: "",
-                title: "Excluir",
+                title: "Excluir o cadastro",
                 id: "btn_del",
                 position: "first",
                 onClickButton: function () {
@@ -643,7 +780,7 @@
                     }
                     else {
 
-                        $("#del-modal").modal("show")
+                        $("#del-modal").modal("show");
                         $.ajax({
                             type: "POST",
                             url: "Documentos/Get",
@@ -653,15 +790,10 @@
 
                             success: function (data) {
                                 if (data.success) {
-                                    $("#del-modal-code").val(data.documento.Codigo)
-                                    document.getElementById("del-modal-label-code").innerHTML = " Código: " + (data.documento.Codigo);
-                                    document.getElementById("del-modal-label-title").innerHTML = "Título: " + (data.documento.Titulo);
+                                    $("#del-modal-code").val(data.documento.Code)
+                                    document.getElementById("del-modal-label-code").innerHTML = " Código: " + (data.documento.Code);
+                                    document.getElementById("del-modal-label-title").innerHTML = "Título: " + (data.documento.Title);
                                     document.getElementById("del-modal-label-filename").innerHTML = "Anexo: " + (data.documento.FileName);
-                                    $("#del-modal-title").val(data.documento.Titulo)
-                                    $("#del-modal-revision").val(data.documento.Revisao)
-                                    $("#del-modal-planned-date").val(data.documento.DateRevisao)
-                                    $("#del-modal-value").val(data.documento.Valor)
-
                                 }
                                 else {
 
@@ -672,6 +804,52 @@
                         });
                     }
 
+                }
+            });
+
+        jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+            {
+                buttonicon: "ui-icon-minus",
+                caption: "",
+                title: "Remover anexo",
+                id: "btn_rem",
+                position: "first",
+                onClickButton: function () {
+
+                    $("#delAnexo-modal-id").val($("#jqGrid").jqGrid('getGridParam', "selrow"));
+
+                    if ($("#delAnexo-modal-id").val() == '') {
+                        toastr.error("Selecione um cadastro para exclusão do anexo", "Documentos");
+                    }
+                    else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Documentos/VerificaArquivo",
+                            data: {
+                                Id: +  $("#delAnexo-modal-id").val()
+                            },
+
+                            success: function (data) {
+                                if (data.success) {
+                                    $("#delAnexo-modal").modal("show");
+                                    document.getElementById("delAnexo-modal-label-filename").innerHTML = "Anexo: " + (data.DocName);
+                                }
+                                else {
+
+                                    if (data.resp == "ausente") {
+                                        toastr.warning("Arquivo ausente! Removido registro no banco", "Documentos");
+                                        $("#jqGrid").trigger('reloadGrid');
+                                    }
+                                    else {
+                                        toastr.warning("Não há anexos neste cadastro!", "Documentos");
+                                    }
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }
                 }
             });
 
@@ -705,18 +883,18 @@
 
                                     if (data.resp == "ausente") {
                                         toastr.warning("Arquivo ausente! Removido registro no banco", "Documentos");
+                                        $("#jqGrid").trigger('reloadGrid');
                                     }
                                     else {
                                         toastr.warning("Não há anexos neste cadastro!", "Documentos");
                                     }
 
-                                   
                                 }
                             },
                             error: function (data) {
 
                                 toastr.error("Erro ao baixar", "Documentos");
-                                
+
                             }
                         });
                     }
@@ -768,7 +946,7 @@
                     }
                 }
             });
-        
+
         jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
             {
                 buttonicon: "ui-icon-circle-arrow-n",
@@ -789,20 +967,12 @@
                             type: "POST",
                             url: "Documentos/Get",
                             data: {
-                                id: +  $("#import-modal-id").val()
+                                Id: +  $("#import-modal-id").val()
                             },
 
                             success: function (data) {
                                 if (data.success) {
-                                    $("#import-modal-code").val(data.documento.Codigo);
-                                    $("#import-modal-title").val(data.documento.Titulo);
-                                    $("#import-modal-revision").val(data.documento.Revisao);
-                                    var getdate = data.documento.DateRevisao;
-                                    var re = "/";
-                                    var novadate = getdate.split(re);
-                                    novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
-                                    $("#import-modal-planned-date").val(novadate);
-                                    $("#import-modal-value").val(data.documento.Valor);
+
                                     $("#import-modal").modal("show");
                                 }
                                 else {
@@ -835,21 +1005,29 @@
                             type: "POST",
                             url: "Documentos/Get",
                             data: {
-                                id: +  $("#edit-modal-id").val()
+                                Id: +  $("#edit-modal-id").val()
                             },
 
                             success: function (data) {
                                 if (data.success) {
-                                    $("#edit-modal-code").val(data.documento.Codigo);
-                                    $("#edit-modal-title").val(data.documento.Titulo);
-                                    $("#edit-modal-revision").val(data.documento.Revisao);
-                                    var getdate = data.documento.DateRevisao;
+                                    $("#edit-modal-code").val(data.documento.Code);
+                                    $("#edit-modal-title").val(data.documento.Title);
+                                    $("#edit-modal-revision").val(data.documento.Rev);
+                                    var getdate = data.documento.Planned_Date;
                                     var re = "/";
                                     var novadate = getdate.split(re);
                                     novadate = novadate[2] + "-" + novadate[1] + "-" + novadate[0];
                                     $("#edit-modal-planned-date").val(novadate);
-                                    $("#edit-modal-value").val(data.documento.Valor);
+                                    $("#edit-modal-value").val(data.documento.DocValue);
                                     $("#edit-modal-filename").val(data.documento.FileName);
+
+                                    if (data.documento.FileName == "-") {
+                                        document.getElementById("edit-modal-filename").setAttribute("readonly", true);
+                                    }
+                                    else {
+                                        document.getElementById("edit-modal-filename").removeAttribute("readonly");
+                                    }
+
                                     $("#edit-modal").modal("show");
                                 }
                                 else {
@@ -873,30 +1051,32 @@
                 onClickButton: function () {
 
                     $("#add-modal").modal("show");
-                    
+
                 }
             });
-
 
         jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
             {
                 buttonicon: "ui-icon-refresh",
                 caption: "",
                 title: "Recarregar",
-                id: "btn_ReloadTeste",
+                id: "btn_Reload",
                 position: "last",
                 onClickButton: function () {
-                                   
-                    $("#jqGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1 }]);                 
+
+                    $("#jqGrid").jqGrid("setGridParam", {
+                        gridComplete: function () {
+                        },
+                        postData: { searchField: "", searchString: "", searchOper: "" },
+                        search: true
+                    }).trigger('reloadGrid');
+
 
                 }
             });
 
-
-
-
     });
-
+   
     $('#send-file').fileUploadUI({
         maxFileSize: 2097151000,
         minFilesize: 00000001,
@@ -932,7 +1112,6 @@
                     break;
                 case "falhousub": toastr.error("Falha ao sobrescrever o arquivo anterior!", "Documentos");
                     break;
-
                 case "banco": toastr.warning("Gravar no banco!", "Documentos");
                     break;
 

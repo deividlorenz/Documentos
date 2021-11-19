@@ -25,26 +25,26 @@ namespace Documentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult Add(string code, string title, string revision, DateTime plannedDate, decimal value, string FileName)
+        public JsonResult Add(string Code, string Title, string Rev, DateTime Planned_Date, decimal DocValue, string FileName)
         {
             var repository = new Repository();
 
             String[] newKey = new string[] { "id", "" };
-            String[] newCampos = new string[] { "code", "title", "rev", "planned_date", "value", "filename" };
-            String[] newValues = new string[] { code, title, revision, plannedDate.ToString("yyyy-MM-dd HH:mm:ss"), value.ToString(), "-" };
+            String[] newCampos = new string[] { "Code", "Title", "Rev", "Planned_Date", "DocValue", "filename" };
+            String[] newValues = new string[] { Code, Title, Rev, Planned_Date.ToString("yyyy-MM-dd HH:mm:ss"), DocValue.ToString(), FileName };
             repository.SaveDados(newCampos, newValues, newKey, "documento", "add");
             return Json(new { success = true });
         }
 
 
         [HttpPost]
-        public JsonResult Edit(int id, string code, string title, string revision, DateTime plannedDate, decimal value, string FileName)
+        public JsonResult Edit(int id, string Code, string Title, string Rev, DateTime Planned_Date, decimal DocValue, string FileName)
         {
             var repository = new Repository();
 
             String[] newKey = new string[] { "id", id.ToString() };
-            String[] newCampos = new string[] { "code", "title", "rev", "planned_date", "value", "filename" };
-            String[] newValues = new string[] { code, title, revision, plannedDate.ToString("yyyy-MM-dd HH:mm:ss"), value.ToString(), FileName };
+            String[] newCampos = new string[] { "Code", "Title", "Rev", "Planned_Date", "DocValue", "FileName" };
+            String[] newValues = new string[] { Code, Title, Rev, Planned_Date.ToString("yyyy-MM-dd HH:mm:ss"), DocValue.ToString(), FileName };
             repository.SaveDados(newCampos, newValues, newKey, "documento", "edit");
             return Json(new { success = true });
 
@@ -57,6 +57,60 @@ namespace Documentos.Controllers
             var repository = new Repository();
             return Json(new { success = true, documento = repository.Get(id) });
 
+        }
+
+
+        public JsonResult GetAll(int? numRows, int? page, string sortField, string sortOrder, bool isSearch, string filters, string searchField, string searchString, string searchOper)
+        {
+
+            int pageIndex = page ?? 1; //--- current page
+            int pageSize = numRows ?? 20; //--- number of rows to show per page
+
+            var repository = new Repository();
+
+            var documento = repository.LoadDados(sortField, sortOrder, isSearch, pageIndex, pageSize, filters, searchField, searchString, searchOper); 
+
+
+            var query = (from u in documento.AsQueryable()
+                         select u);
+
+
+            int totalRecords = repository.CountDados();  //--- number of total items from query
+
+
+            int totalPages = (int)Math.Ceiling((decimal)totalRecords / (decimal)pageSize); //--- number of pages
+
+
+            Object[] obj_rows = new Object[query.ToList().Count];
+            List<Object> lst_obj;
+            for (int i = 0; i < query.ToList().Count; i++)
+            {
+                lst_obj = new List<Object>();
+
+                lst_obj.Add(query.ToList()[i].Id.ToString());
+                lst_obj.Add(query.ToList()[i].Code.ToString());
+                lst_obj.Add(query.ToList()[i].Title.ToString());
+                lst_obj.Add(query.ToList()[i].Rev.ToString());
+                lst_obj.Add(query.ToList()[i].Planned_Date.ToString());
+                lst_obj.Add(query.ToList()[i].DocValue.ToString());
+                lst_obj.Add(query.ToList()[i].FileName.ToString());
+
+                obj_rows[i] = lst_obj.ToArray<Object>();
+
+            }
+
+            //--- format json
+            var jsonData = new
+            {
+                totalpages = totalPages, //--- number of pages
+                page = pageIndex, //--- current page
+                totalrecords = totalRecords, //--- total items
+                rows = (
+                query.ToList().Select((v, i) => new { Id = v.Id, cell = obj_rows[i] })
+
+                ).ToArray()
+            };
+            return Json(jsonData);
         }
 
 
@@ -223,7 +277,7 @@ namespace Documentos.Controllers
                     if (file.Contains(DiskFile))
                     {
                         FileExist = true;
-                        return Json(new { success = true });
+                        return Json(new { success = true, DocName = DocumentoName });
                     }
                 }
             }
@@ -238,6 +292,49 @@ namespace Documentos.Controllers
             }
 
             return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveArquivo(int id)
+        {
+
+            string UploadPath = @"C:\Users\Deivid\source\repos\Documentos\Documentos\Anexos\";
+            string FileId = id.ToString();
+            var repository = new Repository();
+            var Documento = repository.Get(id);
+            var DocumentoName = Documento.FileName;
+            string FullFile = UploadPath + FileId;
+
+            if (DocumentoName == "-")
+            {
+                return Json(new { success = false });
+            }
+            else
+            {
+                foreach (var file in Directory.GetFiles(UploadPath))
+                {
+
+                    if (file.Contains(FileId))
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(file);
+
+                            String[] newKey = new string[] { "Id", FileId.ToString() };
+                            String[] newCampos = new string[] { "FileName" };
+                            String[] newValues = new string[] { "-" };
+                            repository.SaveDados(newCampos, newValues, newKey, "documento", "edit");
+
+                        }
+                        catch
+                        {
+                            return Json(new { success = false });
+                        }
+                    }
+                }
+            }          
+            
+            return Json(new { success = true });
         }
 
 

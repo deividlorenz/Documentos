@@ -11,19 +11,19 @@ namespace Documentos
         public int Id { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public string Codigo { get; set; }
+        public string Code { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public string Titulo { get; set; }
+        public string Title { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public string Revisao { get; set; }
+        public string Rev { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public string DateRevisao { get; set; }
+        public string Planned_Date { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public float Valor { get; set; }
+        public float DocValue { get; set; }
 
         [Required(ErrorMessage = "*")]
         public string FileName { get; set; }

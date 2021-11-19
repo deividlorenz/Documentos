@@ -12,23 +12,23 @@ namespace Documentos.Models
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Código do Documento")]
-        public string Codigo { get; set; }
+        public string Code { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Título do Documento")]
-        public string Titulo { get; set; }
+        public string Title { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Revisão do Documento")]
-        public string Revisao { get; set; }
+        public string Rev { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Data do Documento")]
-        public DateTime DataRevisao { get; set; }
+        public DateTime Planned_Date { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Valor do Documento")]
-        public float Valor { get; set; }
+        public float DocValue { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Nome do Documento")]
